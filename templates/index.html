@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>青玄堂 | 官方網站</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background-color: #0f0c29; color: #e0e0e0; font-family: "Microsoft JhengHei", sans-serif; }
+        .navbar { background: rgba(0, 0, 0, 0.85) !important; backdrop-filter: blur(10px); }
+        .nav-link { color: #D4AF37 !important; margin: 0 15px; cursor: pointer; }
+        .nav-link:hover { color: #fff !important; }
+        .gold-title { color: #D4AF37; text-shadow: 0 0 10px rgba(212, 175, 55, 0.5); }
+        .section-padding { padding: 80px 0; }
+        
+        /* LINE 按鈕 */
+        .line-btn { 
+            background-color: #06C755; color: white !important; border-radius: 50px; 
+            padding: 12px 30px; text-decoration: none; display: inline-block;
+            transition: 0.3s; font-weight: bold;
+        }
+        .line-btn:hover { background-color: #05a346; transform: scale(1.05); }
+
+        /* 地圖外框 */
+        .map-container { border: 2px solid #D4AF37; border-radius: 15px; overflow: hidden; box-shadow: 0 0 20px rgba(212, 175, 55, 0.2); }
+        
+        /* 抽籤卡片 */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05); padding: 50px; border-radius: 20px; 
+            border: 1px solid rgba(212, 175, 55, 0.3); text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand gold-title fs-3" href="#">🔮 青玄堂</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link">關於青玄</a></li>
+                    <li class="nav-item"><a class="nav-link">能量服務</a></li>
+                    <li class="nav-item"><a class="nav-link">預約諮詢</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="container section-padding">
+        <div class="glass-card">
+            <h1 class="gold-title mb-4">領取今日的水晶指引</h1>
+            <p class="mb-5">讓天然水晶的純淨能量，照亮您的前行之路</p>
+            <div id="result-box" class="fs-3 mb-4" style="min-height: 80px;">按下按鈕開始感應...</div>
+            <button class="btn btn-outline-warning btn-lg px-5" onclick="draw()">開始抽籤</button>
+        </div>
+    </header>
+
+    <section class="container section-padding">
+        <div class="row align-items-center">
+            <div class="col-md-5 mb-5">
+                <h2 class="gold-title mb-4">聯繫青玄</h2>
+                <p class="fs-5 mb-4">無論是能量諮詢、課程預約，或是水晶選購，歡迎加入我們的官方 LINE，我們將竭誠為您服務。</p>
+                <div class="mb-4">
+                    <h5 class="text-white"><i class="fas fa-map-marker-alt me-2 text-warning"></i> 我們的場所</h5>
+                    <p>台北市和平東路二段365號6樓</p>
+                </div>
+                <a href="https://line.me/R/ti/p/@wrz5859v" target="_blank" class="line-btn">
+                    <i class="fab fa-line me-2 fs-4"></i> 加入 LINE 官方帳號
+                </a>
+            </div>
+            
+            <div class="col-md-7">
+                <div class="map-container">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m13!1m1!1s0x3442aa2976be2d63:0x6f3e5362540700c0!2zMTA26Ie65YyX5biC5aSn5a6J5Y2A5ZKM5bmz5p2x6Lev5LqM5q61MzY16JmfNuWpkw!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442aa2976be2d63%3A0x6f3e5362540700c0!2zMTA26Ie65YyX5biC5aSn5a6J5Y2A5ZKM5bmz5p2x6Lev5LqM5q61MzY16JmfNuWpkw!5e0!3m2!1szh-TW!2stw!4v1711360000000!5m2!1szh-TW!2stw" 
+                        width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="text-center py-5 border-top border-secondary mt-5">
+        <p class="text-secondary">© 2026 青玄堂 | 讓能量流動，讓心靈安適</p>
+    </footer>
+
+    <script>
+        function draw() {
+            const box = document.getElementById('result-box');
+            box.innerHTML = "正在感應能量...";
+            fetch('/draw')
+                .then(r => r.json())
+                .then(data => {
+                    box.innerHTML = `<span class="gold-title">【${data.name}】</span><br><span class="fs-6">${data.effect}</span>`;
+                });
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
