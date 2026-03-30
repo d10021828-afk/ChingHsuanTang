@@ -3,126 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>青玄堂 | 官方網站</title>
+    <title>7s Soul Lab | 七秒靈魂實驗室</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { background-color: #0f0c29; color: #e0e0e0; font-family: "Microsoft JhengHei", sans-serif; }
-        .navbar { background: rgba(0, 0, 0, 0.85) !important; backdrop-filter: blur(10px); }
-        .nav-link { color: #D4AF37 !important; margin: 0 15px; cursor: pointer; }
-        .nav-link:hover { color: #fff !important; }
-        .gold-title { color: #D4AF37; text-shadow: 0 0 10px rgba(212, 175, 55, 0.5); }
-        .section-padding { padding: 80px 0; }
-        
-        /* LINE 按鈕 */
-        .line-btn { 
-            background-color: #06C755; color: white !important; border-radius: 50px; 
-            padding: 12px 30px; text-decoration: none; display: inline-block;
-            transition: 0.3s; font-weight: bold;
+        body { 
+            background: radial-gradient(circle at center, #0d1b2a 0%, #050a14 100%);
+            color: #e0e1dd; font-family: "Microsoft JhengHei", sans-serif; min-height: 100vh;
         }
-        .line-btn:hover { background-color: #05a346; transform: scale(1.05); }
-
-        /* 地圖外框 */
-        .map-container { border: 2px solid #D4AF37; border-radius: 15px; overflow: hidden; box-shadow: 0 0 20px rgba(212, 175, 55, 0.2); }
-        
-        /* 抽籤卡片 */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.05); padding: 50px; border-radius: 20px; 
-            border: 1px solid rgba(212, 175, 55, 0.3); text-align: center;
+        .navbar { background: rgba(0, 0, 0, 0.8) !important; backdrop-filter: blur(15px); border-bottom: 1px solid rgba(248, 228, 160, 0.2); }
+        .gold-title { color: #F8E4A0; text-shadow: 0 0 20px rgba(248, 228, 160, 0.5); letter-spacing: 2px; }
+        .btn-lab {
+            background: transparent; border: 2px solid #F8E4A0; color: #F8E4A0;
+            border-radius: 50px; padding: 15px 50px; font-weight: bold; transition: all 0.4s ease;
         }
+        .btn-lab:hover { background: rgba(248, 228, 160, 0.15); color: #fff; box-shadow: 0 0 30px rgba(248, 228, 160, 0.4); transform: scale(1.05); }
+        .btn-lab:disabled { border-color: #444; color: #444; }
+        .glass-card { background: rgba(255, 255, 255, 0.02); padding: 60px 40px; border-radius: 30px; border: 1px solid rgba(248, 228, 160, 0.1); }
+        .scanning { animation: scan-glow 2s infinite; }
+        @keyframes scan-glow { 0%, 100% { box-shadow: 0 0 10px rgba(248, 228, 160, 0.1); } 50% { box-shadow: 0 0 40px rgba(248, 228, 160, 0.3); } }
+        .result-area { opacity: 0; transform: translateY(30px); transition: all 1s ease; }
+        .result-area.show { opacity: 1; transform: translateY(0); }
+        .badge-custom { padding: 8px 15px; border-radius: 10px; font-size: 0.9rem; margin-bottom: 10px; display: inline-block; }
     </style>
 </head>
 <body>
 
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container">
-            <a class="navbar-brand gold-title fs-3" href="#">🔮 青玄堂</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link">關於青玄堂</a></li>
-                    <li class="nav-item"><a class="nav-link">能量服務</a></li>
-                    <li class="nav-item"><a class="nav-link">預約諮詢</a></li>
-                </ul>
-            </div>
+            <a class="navbar-brand gold-title fs-3" href="#">✨ 7s Soul Lab</a>
+            <span class="navbar-text d-none d-sm-block">七秒靈魂實驗室 | 直覺讀心感應</span>
         </div>
     </nav>
 
-    <header class="container section-padding">
-        <div class="glass-card">
-            <h1 class="gold-title mb-4">領取今日的水晶指引</h1>
-            <p class="mb-5">讓天然水晶的純淨能量，照亮您的前行之路</p>
-            <div id="result-box" class="fs-3 mb-4" style="min-height: 80px;">按下按鈕開始感應...</div>
-            <button class="btn btn-outline-warning btn-lg px-5" onclick="draw()">開始抽籤</button>
+    <div class="container text-center mt-5 pt-5">
+        <div class="glass-card" id="main-container">
+            <h1 class="gold-title mb-3">大天使神諭連線</h1>
+            <p class="text-secondary mb-5">請在接下來的七秒鐘，放下雜念，與你的靈魂頻率共振。</p>
+            <div id="display-box" class="fs-4 mb-5" style="min-height: 150px; display: flex; align-items: center; justify-content: center; flex-direction: column;">準備好開始感應了嗎？</div>
+            <button class="btn-lab" id="start-btn" onclick="run7sExperiment()">啟動七秒靈魂實驗</button>
+            <div id="result-area" class="result-area mt-4"></div>
         </div>
-    </header>
+    </div>
 
-    <section class="container section-padding">
-        <div class="row align-items-center">
-            <div class="col-md-5 mb-5">
-                <h2 class="gold-title mb-4">聯繫青玄堂</h2>
-                <p class="fs-5 mb-4">無論是能量諮詢、課程預約，或是水晶選購，歡迎加入我們的官方 LINE，我們將竭誠為您服務。</p>
-                <div class="mb-4">
-                    <h5 class="text-white"><i class="fas fa-map-marker-alt me-2 text-warning"></i> 我們的場所</h5>
-                    <p>台北市和平東路二段365號6樓</p>
-                </div>
-                <a href="https://line.me/R/ti/p/@wrz5859v" target="_blank" class="line-btn">
-                    <i class="fab fa-line me-2 fs-4"></i> 加入 LINE 官方帳號
-                </a>
-            </div>
-            
-            <div class="col-md-7">
-                <div class="map-container">
-                    <iframe 
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3615.1767117565355!2d121.545749!3d25.0211828!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442aa20d8299839%3A0xe78393561a7a13d8!2zMTA25Y-w5YyX5biC5aSn5a6J5Y2A5ZKM5bmz5p2x6Lev5LqM5q61MzY16JmfNuWpkw!5e0!3m2!1szh-TW!2stw!4v1711812834567!5m2!1szh-TW!2stw" 
-                        width="100%" 
-                        height="450" 
-                        style="border:0;" 
-                        allowfullscreen="" 
-                        loading="lazy" 
-                        referrerpolicy="no-referrer-when-downgrade">
-                    </iframe>
-                </div>
-            </div>
-        </div>
-    </section>
+    <footer class="text-center py-5 mt-5 opacity-50"><p>© 2026 7s Soul Lab | 讓靈魂在七秒內被聽見</p></footer>
 
-    <footer class="text-center py-5 border-top border-secondary mt-5">
-        <p class="text-secondary">© 2026 青玄堂 | 讓能量流動，讓心靈安適</p>
-    </footer>
+    <script>
+        function run7sExperiment() {
+            const box = document.getElementById('display-box');
+            const btn = document.getElementById('start-btn');
+            const resultArea = document.getElementById('result-area');
+            const container = document.getElementById('main-container');
 
-   <script>
-        function draw() {
-            const box = document.getElementById('result-box');
-            // 抓取剛才按下的那個按鈕
-            const btn = event.currentTarget; 
-
-            // 1. 資安防護：立即禁用按鈕，防止信徒連續點擊消耗伺服器資源
             btn.disabled = true;
-
-            // 顯示金色的旋轉動畫
-            box.innerHTML = '<div class="spinner-border text-warning" role="status"></div><br><span class="mt-3 d-inline-block">正在感應能量...</span>';
+            container.classList.add('scanning');
+            resultArea.classList.remove('show');
             
-            fetch('/draw')
-                .then(r => r.json())
-                .then(data => {
-                    // 延遲一小段時間讓感應更有儀式感
-                    setTimeout(() => {
-                        box.innerHTML = `<span class="gold-title">${data.name}</span><br><span class="fs-5">${data.effect}</span>`;
-                        
-                        // 2. 感應完成，恢復按鈕功能
-                        btn.disabled = false;
-                    }, 800); 
-                })
-                .catch(err => {
-                    box.innerHTML = "感應失敗，請稍後再試";
-                    btn.disabled = false; // 失敗也要解鎖，否則無法再次點擊
-                    console.error(err);
-                });
+            let timer = 7;
+            const countdown = setInterval(() => {
+                box.innerHTML = `<div class="gold-title" style="font-size: 4rem;">${timer}</div><div class="text-info mt-2">靈魂頻率掃描中...</div>`;
+                timer--;
+                if (timer < 0) {
+                    clearInterval(countdown);
+                    container.classList.remove('scanning');
+                    box.innerHTML = `<div class="spinner-grow text-warning"></div><br>解碼訊息中...`;
+                    fetch('/draw').then(r => r.json()).then(data => {
+                        setTimeout(() => {
+                            box.innerHTML = "<span class='text-secondary'>—— 實驗結果已顯化 ——</span>";
+                            resultArea.innerHTML = `
+                                <h2 class="gold-title mb-2">${data.name}</h2>
+                                <div class="mb-3">
+                                    <span class="badge-custom bg-primary bg-opacity-25 text-info">#${data.theme}</span>
+                                    <span class="badge-custom bg-warning bg-opacity-25 text-warning">能量水晶：${data.crystal}</span>
+                                </div>
+                                <div class="p-4 rounded-4" style="background: rgba(255,255,255,0.05); border: 1px dashed rgba(248,228,160,0.3);">
+                                    <p class="fs-5 text-light text-start mb-0" style="line-height: 1.8;">${data.message}</p>
+                                </div>`;
+                            resultArea.classList.add('show');
+                            btn.disabled = false;
+                        }, 800); 
+                    });
+                }
+            }, 1000);
         }
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
