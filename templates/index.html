@@ -76,14 +76,14 @@
             <div class="col-md-7">
                 <div class="map-container">
                     <iframe 
-    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3615.1767117565355!2d121.54574977605483!3d25.02802263853151!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442aa2976be2d6d%3A0x6799015ba6a05e4!2zMTA26Ie65YyX5biC5aSn5a6J5Y2A5ZKM5bmz東6Lev5LqM5q61MzY16JmfNuWogu-8iOmdouW7uuWkp-W7iO-8iQ!5e0!3m2!1szh-TW!2stw!4v1711384000000!5m2!1szh-TW!2stw" 
-    width="100%" 
-    height="450" 
-    style="border:0;" 
-    allowfullscreen="" 
-    loading="lazy" 
-    referrerpolicy="no-referrer-when-downgrade">
-</iframe>
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3615.1767117565355!2d121.545749!3d25.0211828!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442aa20d8299839%3A0xe78393561a7a13d8!2zMTA25Y-w5YyX5biC5aSn5a6J5Y2A5ZKM5bmz5p2x6Lev5LqM5q61MzY16JmfNuWpkw!5e0!3m2!1szh-TW!2stw!4v1711812834567!5m2!1szh-TW!2stw" 
+                        width="100%" 
+                        height="450" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
                 </div>
             </div>
         </div>
@@ -96,11 +96,20 @@
     <script>
         function draw() {
             const box = document.getElementById('result-box');
-            box.innerHTML = "正在感應能量...";
+            // 顯示金色的旋轉動畫與感應文字
+            box.innerHTML = '<div class="spinner-border text-warning" role="status"></div><br><span class="mt-3 d-inline-block">正在感應能量...</span>';
+            
             fetch('/draw')
                 .then(r => r.json())
                 .then(data => {
-                    box.innerHTML = `<span class="gold-title">【${data.name}】</span><br><span class="fs-6">${data.effect}</span>`;
+                    // 延遲一小段時間讓動畫更有感覺（可選）
+                    setTimeout(() => {
+                        box.innerHTML = `<span class="gold-title">${data.name}</span><br><span class="fs-5">${data.effect}</span>`;
+                    }, 500); 
+                })
+                .catch(err => {
+                    box.innerHTML = "感應失敗，請稍後再試";
+                    console.error(err);
                 });
         }
     </script>
