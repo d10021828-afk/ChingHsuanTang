@@ -93,22 +93,32 @@
         <p class="text-secondary">© 2026 青玄堂 | 讓能量流動，讓心靈安適</p>
     </footer>
 
-    <script>
+   <script>
         function draw() {
             const box = document.getElementById('result-box');
-            // 顯示金色的旋轉動畫與感應文字
+            // 抓取剛才按下的那個按鈕
+            const btn = event.currentTarget; 
+
+            // 1. 資安防護：立即禁用按鈕，防止信徒連續點擊消耗伺服器資源
+            btn.disabled = true;
+
+            // 顯示金色的旋轉動畫
             box.innerHTML = '<div class="spinner-border text-warning" role="status"></div><br><span class="mt-3 d-inline-block">正在感應能量...</span>';
             
             fetch('/draw')
                 .then(r => r.json())
                 .then(data => {
-                    // 延遲一小段時間讓動畫更有感覺（可選）
+                    // 延遲一小段時間讓感應更有儀式感
                     setTimeout(() => {
                         box.innerHTML = `<span class="gold-title">${data.name}</span><br><span class="fs-5">${data.effect}</span>`;
-                    }, 500); 
+                        
+                        // 2. 感應完成，恢復按鈕功能
+                        btn.disabled = false;
+                    }, 800); 
                 })
                 .catch(err => {
                     box.innerHTML = "感應失敗，請稍後再試";
+                    btn.disabled = false; // 失敗也要解鎖，否則無法再次點擊
                     console.error(err);
                 });
         }
